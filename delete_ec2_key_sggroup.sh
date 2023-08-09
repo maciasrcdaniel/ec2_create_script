@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 # Terminate ec2 instance
-echo "Type the ec2 instance id you would like to terminate: " 
+echo "Type the ec2 instance id you would like to terminate: EX. i-02ksdf23421342" 
 read -r ec2instanceid
 echo "---------------------------------------------------------------" 
 
@@ -33,12 +33,18 @@ read -r deletionresponse
 # if/then statement to confirm termination deletion of items
 
 if [[ $deletionresponse == "Y" || "y" ]]; then
+    aws ec2 terminate-instances --instance-ids $ec2instanceid
+    echo "****** Termination in progress ******" 
+    sleep 10
+    aws ec2 delete-security-group --group-id $sggroupid
+    aws ec2 delete-key-pair --key-name $keypairname
     echo "Items have been deleted"
-elif [[ $deletionresponse == "N" || "n" ]]; then 
-    echo "Items have NOT been deleted" 
 else
-    echo "Please enter Y or n" 
+    echo "Items have NOT been deleted" 
 fi
+
+
+
 
 
 
